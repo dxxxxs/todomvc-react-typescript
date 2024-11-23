@@ -61,6 +61,19 @@ function App(): JSX.Element {
     setTodos(newTodos)
   }
 
+  const handleUpdateTitle = ({ id, title }: Omit<TodoType, 'completed'>) => {
+    const newTodos = todos.map(todo => {
+      if (todo.id == id) {
+        return {
+          ...todo,
+          title
+        }
+      }
+      return todo
+    })
+    setTodos(newTodos)
+  }
+
 
   return (
     <div className="todoapp">
@@ -71,6 +84,7 @@ function App(): JSX.Element {
         onRemoveTodo={handleRemove}
         onToggleCompleteTodo={handleCompleted}
         todos={filteredTodos}
+        setTitle={handleUpdateTitle}
       />
       <Footer
         filterSelected={filterSelected}

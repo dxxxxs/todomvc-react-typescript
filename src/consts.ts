@@ -18,3 +18,8 @@ export const FILTERS_BUTTONS = {
         href: `/?filter=${TODO_FILTERS.COMPLETED}`
     }
 } as const
+
+export const KEY_CODES = {
+    ENTER: 13,
+    ESCAPE: 27
+} as const
