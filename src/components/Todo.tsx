@@ -23,8 +23,8 @@ export const Todo: React.FC<Props> = ({
     const [editedTitle, setEditedTitle] = useState(title)
     const inputEditTitle = useRef<HTMLInputElement>(null)
 
-    const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-        if (e.key === 'Enter') {
+    const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+        if (event.key === 'Enter') {
             setEditedTitle(editedTitle.trim())
 
             if (editedTitle !== title) {
@@ -36,7 +36,7 @@ export const Todo: React.FC<Props> = ({
             setIsEditing('')
         }
 
-        if (e.key === 'Escape') {
+        if (event.key === 'Escape') {
             setEditedTitle(title)
             setIsEditing('')
         }
@@ -45,6 +45,17 @@ export const Todo: React.FC<Props> = ({
     useEffect(() => {
         inputEditTitle.current?.focus()
     }, [isEditing])
+
+    const handleOnBlur: React.FocusEventHandler<HTMLInputElement> = () => {
+        setEditedTitle(editedTitle.trim())
+
+        if (editedTitle !== title) {
+            setTitle({ id, title: editedTitle })
+        }
+
+        if (editedTitle === '') onRemoveTodo({ id })
+        setIsEditing('')
+    }
 
     return (
         <>
@@ -70,6 +81,8 @@ export const Todo: React.FC<Props> = ({
                 value={editedTitle}
                 onChange={(event) => { setEditedTitle(event.target.value) }}
                 onKeyDown={handleKeyDown}
+                ref={inputEditTitle}
+                onBlur={handleOnBlur}
             />
         </>
     )
